@@ -13,27 +13,39 @@ class KMeans(object):
                  tol:float=1e-4, display:bool=False) -> None:
         self.n_clusters = n_clusters            # Nombre de clusters
         self.max_iter = max_iter                # Nombre d'itération
-        self.early_stopping = early_stopping    # arrête l'apprentissage si 
+        self.early_stopping = early_stopping    # arrête l'apprentissage si
         self.tol = tol                          # seuil de tolérance entre 2 itérations
         self.display = display                  # affichage des données
 
         self.cluster_centers = None             # Coordonnées des centres de regroupement
                                                 # (centre de gravité des classes)
-    
-    def _compute_distance(self, vec1:np.ndarray, vec2:np.ndarray) -> Tuple(float, np.ndarray):
+
+    def _compute_distance(self, mat:np.ndarray, vec:np.ndarray) -> np.ndarray:
         """Retourne la distance quadratique entre vec1 et vec2 (squared euclidian distance)
         """
-        pass
-    
+        #return np.linalg.norm(vec1-vec2)**2
+        # print np.sum((mat-vec)**2,axis=1)
+        return np.sum((mat-vec)**2,axis=1)
+
+
     def _compute_inertia(self, X:np.ndarray, y:np.ndarray) -> float:
         """Retourne la Sum of Squared Errors entre les points et le centre de leur
         cluster associe
         """
-        pass
-    
+        sse = 0.0
+        for label in range(self.n_clusters):
+            data = X[y==label] # on recupère dans data tous les pts X ayant le label Y
+            sse +=np.sum(self._compute_distance(data, self.cluster_centers[label]))
+        return sse
+
+
     def _update_centers(self, X:np.ndarray, y:np.ndarray) -> None:
         """Recalcule les coordonnées des centres des clusters
         """
+        for label in range(self.n_clusters):
+            data = X[y==label]
+            self.cluster_centers[label]=np.mean(data,axis=0);
+
         pass
 
     def predict(self, X:np.ndarray) -> np.ndarray:
@@ -44,7 +56,7 @@ class KMeans(object):
         """
         # nombre d'échantillons
         n_data = X.shape[0]
-
+        return (0)
         pass
 
     def fit(self, X:np.ndarray) -> None:
@@ -58,7 +70,7 @@ class KMeans(object):
             shutil.rmtree('./img_training', ignore_errors=True)
             metric = []
 
-        # 2 cas à traiter : 
+        # 2 cas à traiter :
         #   - soit le nombre de clusters est supérieur ou égale au nombre de données
         #   - soit le nombre de clusters est inférieur au nombre de données
         if self.n_clusters >= n_data:
@@ -89,7 +101,7 @@ class KMeans(object):
                 old_distance = current_distance
                 current_distance = self._compute_inertia(X, y)
 
-                # stoppe l'algorithme si la somme des distances quadratiques entre 
+                # stoppe l'algorithme si la somme des distances quadratiques entre
                 # 2 itérations est inférieur au seuil de tolérance
                 if self.early_stopping:
                     # A compléter
@@ -112,7 +124,7 @@ class KMeans(object):
 
         score = 0
         for i in range(self.n_clusters):
-            _, counts = np.unique(y[y_pred == i], return_counts=True) 
+            _, counts = np.unique(y[y_pred == i], return_counts=True)
             score += counts.max()
 
         score /= n_data

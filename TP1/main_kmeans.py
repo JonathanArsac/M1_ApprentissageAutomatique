@@ -8,7 +8,7 @@ def main():
     filepath = "./data/self_test.csv"
     #filepath = "./data/iris.csv"
 
-    # chargement des données
+    # chargement des donnees
     data, labels = load_dataset(filepath)
 
     # initialisation de l'objet KMeans
@@ -21,9 +21,9 @@ def main():
     # calcule les clusters
     kmeans.fit(data)
 
-    # calcule la pureté de nos clusters
+    # calcule la purete de nos clusters
     score = kmeans.score(data, labels)
-    print("Pureté : {}".format(score))
+    print("Purete : {}".format(score))
 
     input("Press any key to exit...")
 
