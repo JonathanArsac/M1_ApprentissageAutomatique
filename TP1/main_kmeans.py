@@ -12,9 +12,9 @@ def main():
     data, labels = load_dataset(filepath)
 
     # initialisation de l'objet KMeans
-    kmeans = KMeans(n_clusters=3,
+    kmeans = KMeans(n_clusters=6,
                     max_iter=100,
-                    early_stopping=True,
+                    early_stopping=False,
                     tol=1e-6,
                     display=True)
 

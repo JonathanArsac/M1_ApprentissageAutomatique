@@ -13,7 +13,7 @@ class KMeans(object):
                  tol:float=1e-4, display:bool=False) -> None:
         self.n_clusters = n_clusters            # Nombre de clusters
         self.max_iter = max_iter                # Nombre d'itération
-        self.early_stopping = early_stopping    # arrête l'apprentissage si
+        self.early_stopping =early_stopping    # arrête l'apprentissage si
         self.tol = tol                          # seuil de tolérance entre 2 itérations
         self.display = display                  # affichage des données
 
@@ -25,6 +25,7 @@ class KMeans(object):
         """
         #return np.linalg.norm(vec1-vec2)**2
         # print np.sum((mat-vec)**2,axis=1)
+
         return np.sum((mat-vec)**2,axis=1)
 
 
@@ -42,11 +43,11 @@ class KMeans(object):
     def _update_centers(self, X:np.ndarray, y:np.ndarray) -> None:
         """Recalcule les coordonnées des centres des clusters
         """
+
         for label in range(self.n_clusters):
             data = X[y==label]
             self.cluster_centers[label]=np.mean(data,axis=0);
 
-        pass
 
     def predict(self, X:np.ndarray) -> np.ndarray:
         """attribue un indice de cluster à chaque point de data
@@ -54,10 +55,12 @@ class KMeans(object):
         X = données
         y = cluster associé à chaque donnée
         """
-        # nombre d'échantillons
-        n_data = X.shape[0]
-        return (0)
-        pass
+        data = np.zeros((self.n_clusters,X.shape[0]));
+        for label in range(self.n_clusters):
+            data[label] = self._compute_distance(X,self.cluster_centers[label])
+        y =np.argmin(data,axis=0);
+        return y
+
 
     def fit(self, X:np.ndarray) -> None:
         """Apprentissage des centroides
@@ -79,6 +82,7 @@ class KMeans(object):
             self.cluster_centers[:n_data] = X
         else:
             # Initialisation des centroides
+
             self.cluster_centers = X[:self.n_clusters,:]
 
             # initialisation d'un paramètre permettant de stopper les itérations lors de la convergence
@@ -100,13 +104,20 @@ class KMeans(object):
                 # mise à jour de la somme des distances
                 old_distance = current_distance
                 current_distance = self._compute_inertia(X, y)
+                if abs(old_distance-current_distance)<self.tol :
+                    self.early_stopping=True
 
                 # stoppe l'algorithme si la somme des distances quadratiques entre
                 # 2 itérations est inférieur au seuil de tolérance
+
                 if self.early_stopping:
                     # A compléter
-                    #stabilise = ....
+
+                    stabilise = True
                     if stabilise:
+                        diff = abs(old_distance - current_distance)
+                        metric.append(diff)
+                        plot_training(i, X, y, self.cluster_centers, metric)
                         break
 
                 # affichage des clusters
