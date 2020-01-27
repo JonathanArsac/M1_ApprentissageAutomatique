@@ -104,8 +104,6 @@ class KMeans(object):
                 # mise à jour de la somme des distances
                 old_distance = current_distance
                 current_distance = self._compute_inertia(X, y)
-                if abs(old_distance-current_distance)<self.tol :
-                    self.early_stopping=True
 
                 # stoppe l'algorithme si la somme des distances quadratiques entre
                 # 2 itérations est inférieur au seuil de tolérance
@@ -113,7 +111,9 @@ class KMeans(object):
                 if self.early_stopping:
                     # A compléter
 
-                    stabilise = True
+                    if abs(old_distance-current_distance)<self.tol :
+                        stabilise=True
+
                     if stabilise:
                         diff = abs(old_distance - current_distance)
                         metric.append(diff)

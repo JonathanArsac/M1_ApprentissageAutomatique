@@ -14,7 +14,7 @@ def main():
     # initialisation de l'objet KMeans
     kmeans = KMeans(n_clusters=6,
                     max_iter=100,
-                    early_stopping=False,
+                    early_stopping=True,
                     tol=1e-6,
                     display=True)
 
