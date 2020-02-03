@@ -28,7 +28,7 @@ class Perceptron(object):
         # initialisation quelconques des connexions synaptiques
         # on considèrera le biais comme la multiplication d'une entrée de valeur 1.0 par un poids associé
         # le biais est utilisé comme seuil de décision du perceptron lors de la prédiction
-        self.weights = np.array([-2.0,-3.0,6.0])
+        self.weights = np.array([-2.0,3.0,6.0])
         #self.weights = np.random.normal(0, 1, size=in_features+1)
 
     def predict(self, X:np.ndarray) -> float:
@@ -70,6 +70,7 @@ class Perceptron(object):
 
         for iteration in range(self.max_iter):
             # variable stockant l'accumulation des coordonnées
+
             modif_w = np.zeros(len(self.weights))
             erreur = y[0] - y[0]
             erreurpoint=X[0]
@@ -103,7 +104,7 @@ class Perceptron(object):
 
             erreurpoint = np.insert(erreurpoint,2,1.)
 
-            self.weights = np.add(old_weights, (self.lr * erreur * erreurpoint))
+            self.weights = np.add(old_weights, ((self.lr/(iteration+1)) * erreur * erreurpoint))
 
             # stopper l'algorithme lorsque l'algorithme converge
             if self.early_stopping:

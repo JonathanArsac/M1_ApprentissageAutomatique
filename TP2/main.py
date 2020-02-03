@@ -26,7 +26,7 @@ def main():
     # labels = np.where(labels == 0, 1, -1)
 
     # Instanciation de la classe perceptron
-    p = Perceptron(2, learning_rate=0.1, lr_decay=False,
+    p = Perceptron(2, learning_rate=0.2, lr_decay=False,
                    early_stopping=True, display=True)
 
     # Apprentissage
