@@ -4,7 +4,7 @@ import shutil
 from typing import Tuple
 
 import numpy as np
-
+from random import sample
 from utils import plot_training
 
 
@@ -23,8 +23,6 @@ class KMeans(object):
     def _compute_distance(self, mat:np.ndarray, vec:np.ndarray) -> np.ndarray:
         """Retourne la distance quadratique entre vec1 et vec2 (squared euclidian distance)
         """
-        #return np.linalg.norm(vec1-vec2)**2
-        # print np.sum((mat-vec)**2,axis=1)
 
         return np.sum((mat-vec)**2,axis=1)
 
@@ -83,7 +81,12 @@ class KMeans(object):
         else:
             # Initialisation des centroides
 
-            self.cluster_centers = X[:self.n_clusters,:]
+                self.cluster_centers = X[:self.n_clusters,:]
+
+            # A RaJOUTER POUR LE RANDOm POUR LES DONNEES EN 2D !!!
+            #self.cluster_centers = sample(list(X),k=self.n_clusters);
+
+
 
             # initialisation d'un paramètre permettant de stopper les itérations lors de la convergence
             stabilise = False
